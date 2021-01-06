@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="title">iOS Keyboard / Gamepad Focus Bug</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body>
+    <div id="text"></div>
+    <script type="text/javascript">
+        const text = document.getElementById("text");
+        let i = 0;
+        setInterval(() => {
+            for (let gamepad of window.navigator.getGamepads()) {
+                if (!gamepad) {
+                    continue;
+                }
+
+                let str = gamepad.axes.map(x => x.toPrecision(2)).concat(gamepad.buttons.map(x => x.value)).join(", ") + "\n";
+                text.innerText = i.toString() + ": " + str + text.innerText.substr(0, 1000);
+                i++;
+            }
+        }, 1000);
+
+        document.body.onkeydown = (ev) => {
+            let str = ev.code;
+            text.innerText = i.toString() + ": " + str + text.innerText.substr(0, 1000);
+            i++;
+        }
+    </script>
+</body>
+</html>
